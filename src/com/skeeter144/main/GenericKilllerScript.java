@@ -90,52 +90,18 @@ public class GenericKilllerScript extends Script {
     			inventory.interact("Bury", "Bones");
     			return random(900, 1200);
     		}else {
-    			buryBones = false;
+    			buryingBones = false;
     		}
     	}
     	
     	forgetPositions.entrySet().removeIf((i) -> System.currentTimeMillis() - i.getValue() > 60 * 2 * 1000);
     	killPositions.entrySet().removeIf((i) -> System.currentTimeMillis() - i.getValue() > 60 * 2 * 1000);
     	
-//    		Item b = getInventory().getItem("Bones");
-//    		if(b != null && b.interact("Bury")) {
-//    			Sleep.sleepUntil(() -> !player.isAnimating(), 5000);
-//    			buryBones = true;
-//    			return random(500, 700);
-//    		}else {
-//    			buryBones = false;
-//    		}
-//    	}
 		Entity target = getNpcs().closest(new Filter<NPC>() {
 			public boolean match(NPC e) {
 				return e.getName().contains(targetName) && !e.isUnderAttack() && e.isAttackable() && e.getHealthPercent() == 100;
 			}
     	});
-    	
-    	
-//    	if(bones != null && player.getPosition().distance(bones.getPosition()) < dist)
-//    	{
-//    		dist = player.getPosition().distance(bones.getPosition());
-//    		closest = bones;
-//    	}
-    	
-    	int targetDist = Integer.MAX_VALUE; 
-    	if(target != null)
-    		targetDist = player.getPosition().distance(target.getPosition());
-    	
-		
-    	int itemDist = Integer.MAX_VALUE;
-    	
-    	
-//    	if (feathers != null && fDist < cDist  && feathers.interact("Take")) {
-//			Sleep.sleepUntil(() -> !feathers.exists(), 5000);
-//			return random(50, 150);
-//		}
-
-//    	if (bones != null && !forgetPositions.containsKey(bones.getPosition()) && bones.interact("Take")) {
-//			Sleep.sleepUntil(() -> !bones.exists(), 5000);
-//			return random(50, 150);
-//		}
     	
     	GroundItem targetItem = getGroundItems().closest(new Filter<GroundItem>() {
 			public boolean match(GroundItem i) {
@@ -145,7 +111,7 @@ public class GenericKilllerScript extends Script {
 			}
     	});
     	
-    	if(targetItem != null && targetItem.getPosition().distance(myPosition()) < 5)
+    	if(!inventory.isFull() && targetItem != null && targetItem.getPosition().distance(myPosition()) < 5)
     	{
     		targetItem.interact("Take");
     		Sleep.sleepUntil(() -> !targetItem.exists(), 5000);
